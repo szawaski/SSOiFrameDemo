@@ -1,5 +1,5 @@
 # SSOiFrameDemo
-Single Sign On in Azure AD B2C with one remote app in an iframe that can also receive data
+This demonstrates how to do an SSO login with one app running in an iFrame. Because the app in the iFrame cannot redirect to the SSO provider while in a frame it does this by using a popup.  The projects use the Zerra and Zerra.Identity packages from the Zerra framework https://github.com/szawaski/Zerra
 
 ## Step 1
 In Azure AD B2C add a new App Registrations the MainApp.
