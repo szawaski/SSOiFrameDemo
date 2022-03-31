@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="appsettings.json" />
+    <Content Remove="C:\Users\Steven Zawaski\.nuget\packages\zerra.web\1.0.0\contentFiles\any\net5.0\JavaScript\JavaScriptModels.tt" />
+    <Content Remove="C:\Users\Steven Zawaski\.nuget\packages\zerra.web\1.0.0\contentFiles\any\net5.0\TypeScript\TypeScriptModels.tt" />
+    <Content Remove="C:\Users\Steven Zawaski\.nuget\packages\zerra.web\2.1.2\contentFiles\any\net5.0\JavaScript\JavaScriptModels.tt" />
+    <Content Remove="C:\Users\Steven Zawaski\.nuget\packages\zerra.web\2.1.2\contentFiles\any\net5.0\TypeScript\TypeScriptModels.tt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Zerra.Identity" Version="0.8.3" />
+    <PackageReference Include="Zerra.Web" Version="2.1.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SharedSecurity\SharedSecurity.csproj" />
+  </ItemGroup>
+
+</Project>

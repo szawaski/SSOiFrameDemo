@@ -1,0 +1,30 @@
+﻿@model FrameApp.Models.HomeViewModel
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div>
+    <table>
+        <tr>
+            <th>Name:</th>
+            <td>@Model.UserName</td>
+        </tr>
+        <tr>
+            <th>Roles:</th>
+            <td>
+                @foreach (var role in Model.Roles)
+                {
+                    <div>@role</div>
+                }
+            </td>
+        </tr>
+        <tr>
+            <th>Value1:</th>
+            <td>@Model.DataFromMainApp.Value1</td>
+        </tr>
+        <tr>
+            <th>Value2:</th>
+            <td>@Model.DataFromMainApp.Value2</td>
+        </tr>
+    </table>
+</div>

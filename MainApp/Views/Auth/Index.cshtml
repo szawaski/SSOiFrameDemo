@@ -1,0 +1,41 @@
+﻿@model MainApp.Models.AuthViewModel
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1><a asp-area="" asp-controller="Auth" asp-action="LoginSSO">Login</a></h1>
+    <h1><a asp-area="" asp-controller="Auth" asp-action="LogoutSSO">Logout</a></h1>
+</div>
+
+<hr />
+@if (User.Identity.IsAuthenticated)
+{
+        <div>
+            <table>
+                <tr>
+                    <th>User Name:</th>
+                    <td>@Model.UserName</td>
+                </tr>
+                <tr>
+                    <th>Roles:</th>
+                    <td>
+                    @foreach (var role in Model.Roles)
+                    {
+                        <div>@role</div>
+                    }
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <hr />
+        <div>
+            <iframe src="https://localhost:44331?data=@System.Net.WebUtility.UrlEncode(Model.DataToSend)" style="width:300px; height:300px;"></iframe>
+        </div>
+}
+else
+{
+    <div>
+        <strong>No User Authenticated</strong>
+    </div>
+}

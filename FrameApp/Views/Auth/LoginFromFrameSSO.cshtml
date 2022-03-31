@@ -1,0 +1,20 @@
+﻿@model LoginFromFrameSSOViewModel
+@{
+    ViewData["Title"] = "Auth";
+}
+
+<div style="text-align: center;">
+    Logging in...
+</div>
+
+<script type="text/javascript">
+    const loginUrl = "@Url.Action("LoginSSO", "Auth")?return=@System.Net.WebUtility.UrlEncode(@Url.Action("LoginCallbackSSO", "Auth"))";
+    const returnUrl = "@Model.ReturnUrl";
+    const loginWindow = window.open(loginUrl, "Login", 'width=400,height=500,scrollbars=yes');
+    const timer = setInterval(function() {
+        if (loginWindow.closed) {
+            clearInterval(timer);
+            window.location = returnUrl;
+        }
+    }, 1000);
+</script>
