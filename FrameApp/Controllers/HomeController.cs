@@ -35,16 +35,22 @@ namespace FrameApp.Controllers
             if (String.IsNullOrWhiteSpace(data))
                 throw new Exception("Expected parameter data");
 
+            //Read data sent from MainApp. Note this token expires after the time set in Transport.CreateSecureToken.
+            var dataFromMainApp = Transport.ReadSecureToken<TestDataModel>(data);
+
             var user = Auth.GetUserFromClaims();
             if (user == null)
-                return RedirectToAction("LoginFromFrameSSO", "Auth", new { returnUrl = Url.Action("Index", "Home", new { data }) });
-
-            //Read data sent from MainApp. Note this token expires in 90s.
-            var dataFromMainApp = Transport.ReadSecureToken<TestDataModel>(data);
+            {
+                //recreate the token with longer expiration to allow the user time to login
+                var newData = Transport.CreateSecureToken(dataFromMainApp, 300);
+                return RedirectToAction("LoginFromFrameSSO", "Auth", new { returnUrl = Url.Action("Index", "Home", new { newData }) });
+            }
 
             //Validate the user in the FrameApp is the same as the MainApp
             if (dataFromMainApp.User.Email != user.Email)
+            {
                 return RedirectToAction("LogoutFromFrameSSO", "Auth", new { returnUrl = Url.Action("Index", "Home", new { data }) });
+            }
 
             var viewModel = new HomeViewModel
             {

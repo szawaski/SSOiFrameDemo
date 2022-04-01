@@ -9,12 +9,10 @@ namespace SharedSecurity
 {
     public static class Transport
     {
-        private static readonly TimeSpan tokenExpiration = TimeSpan.FromSeconds(90);
-
         private static readonly SymmetricKey key = SymmetricEncryptor.GetKey(Config.GetSetting("SharedEncryptionKey"));
         private static readonly ByteSerializer serializer = new ByteSerializer();
 
-        public static string CreateSecureToken()
+        public static string CreateSecureToken(int? expiresInSeconds = 90)
         {
             var principal = System.Threading.Thread.CurrentPrincipal as ClaimsPrincipal;
             if (principal == null)
@@ -24,7 +22,7 @@ namespace SharedSecurity
 
             var model = new SecureTokenModel()
             {
-                Expires = DateTime.UtcNow.Add(tokenExpiration),
+                Expires = expiresInSeconds.HasValue ? DateTime.UtcNow.AddSeconds(expiresInSeconds.Value) : (DateTime?)null,
                 User = user,
             };
 
@@ -33,7 +31,7 @@ namespace SharedSecurity
             var encoded = Convert.ToBase64String(encrypted);
             return encoded;
         }
-        public static string CreateSecureToken<T>(T data)
+        public static string CreateSecureToken<T>(T data, int? expiresInSeconds = 90)
         {
             var principal = System.Threading.Thread.CurrentPrincipal as ClaimsPrincipal;
             if (principal == null)
@@ -43,7 +41,7 @@ namespace SharedSecurity
 
             var model = new SecureTokenModel<T>()
             {
-                Expires = DateTime.UtcNow.Add(tokenExpiration),
+                Expires = expiresInSeconds.HasValue ? DateTime.UtcNow.AddSeconds(expiresInSeconds.Value) : (DateTime?)null,
                 User = user,
                 Data = data
             };
@@ -68,7 +66,7 @@ namespace SharedSecurity
                 throw new SecurityException("Invalid Secure Token");
             }
 
-            if (model.Expires < DateTime.UtcNow)
+            if (model.Expires.HasValue && model.Expires < DateTime.UtcNow)
                 throw new SecurityException("Secure Token Has Expired");
 
             return model;
@@ -87,7 +85,7 @@ namespace SharedSecurity
                 throw new SecurityException("Invalid Secure Token");
             }
 
-            if (model.Expires < DateTime.UtcNow)
+            if (model.Expires.HasValue && model.Expires < DateTime.UtcNow)
                 throw new SecurityException("Secure Token Has Expired");
 
             return model;

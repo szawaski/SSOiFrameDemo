@@ -45,7 +45,7 @@ namespace MainApp.Controllers
                     Value1 = "stuff",
                     Value2 = 12345
                 };
-                var dataToSend = Transport.CreateSecureToken(modelToSend);
+                var dataToSend = Transport.CreateSecureToken(modelToSend, 90);
 
                 viewModel.UserName = user.Email;
                 viewModel.Roles = user.Roles;
